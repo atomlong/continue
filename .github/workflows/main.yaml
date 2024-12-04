@@ -1,6 +1,9 @@
 name: Publish Extension
 
 on:
+  push:
+    branches:
+      - main
   release:
     types: [released]
 
@@ -13,7 +16,7 @@ jobs:
       - id: check
         working-directory: .
         run: |
-          if [[ "${{ github.event.release.tag_name }}" == v0.8.*-vscode ]]; then
+          if [[ "${{ github.event.release.tag_name }}" == v0.9.*-vscode ]]; then
             echo "should_run=true" >> $GITHUB_OUTPUT
           else
             echo "should_run=false" >> $GITHUB_OUTPUT
@@ -195,7 +198,7 @@ jobs:
           files: |
             vsix-artifacts/*.vsix
           token: ${{ secrets.CI_GITHUB_TOKEN }}
-          repository: continuedev/continue
+          repository: atomlong/continue
 
   publish:
     runs-on: ubuntu-latest
