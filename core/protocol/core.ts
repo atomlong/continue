@@ -1,5 +1,6 @@
 import { AutocompleteInput } from "../autocomplete/util/types";
 import { ProfileDescription } from "../config/ConfigHandler";
+import { ConfigResult } from "../config/load";
 
 import { ConfigResult } from "@continuedev/config-yaml";
 import type {
@@ -15,6 +16,7 @@ import type {
   LLMFullCompletionOptions,
   ModelDescription,
   ModelRoles,
+  PromptLog,
   RangeInFile,
   SerializedContinueConfig,
   Session,
@@ -22,27 +24,6 @@ import type {
   SiteIndexingConfig,
   ToolCall,
 } from "../";
-
-export type ProtocolGeneratorYield<T> = {
-  done?: boolean;
-  content: T;
-};
-export type ProtocolGeneratorType<Y> = AsyncGenerator<
-  ProtocolGeneratorYield<Y>
->;
-
-export type AsyncGeneratorYieldType<T> =
-  T extends AsyncGenerator<infer Y, any, any>
-    ? Y extends ProtocolGeneratorYield<infer PR>
-      ? PR
-      : never
-    : never;
-// export type AsyncGeneratorReturnType<T> =
-//   T extends AsyncGenerator<any, infer R, any>
-//     ? R extends ProtocolGeneratorYield<infer PR>
-//       ? PR
-//       : never
-//     : never;
 
 export type OnboardingModes =
   | "Local"
@@ -120,7 +101,7 @@ export type ToCoreFromIdeOrWebviewProtocol = {
       historyIndex: number;
       selectedCode: RangeInFile[];
     },
-    ProtocolGeneratorType<string>,
+    AsyncGenerator<string>,
   ];
   "llm/complete": [
     {
@@ -137,7 +118,7 @@ export type ToCoreFromIdeOrWebviewProtocol = {
       completionOptions: LLMFullCompletionOptions;
       title: string;
     },
-    ProtocolGeneratorType<string>,
+    AsyncGenerator<string>,
   ];
   "llm/streamChat": [
     {
@@ -145,7 +126,7 @@ export type ToCoreFromIdeOrWebviewProtocol = {
       completionOptions: LLMFullCompletionOptions;
       title: string;
     },
-    ProtocolGeneratorType<ChatMessage>,
+    AsyncGenerator<ChatMessage, PromptLog>,
   ];
   streamDiffLines: [
     {
@@ -156,7 +137,7 @@ export type ToCoreFromIdeOrWebviewProtocol = {
       language: string | undefined;
       modelTitle: string | undefined;
     },
-    ProtocolGeneratorType<DiffLine>,
+    AsyncGenerator<DiffLine>,
   ];
   "chatDescriber/describe": [
     {
