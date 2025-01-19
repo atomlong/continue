@@ -49,14 +49,6 @@ jobs:
             platform: alpine
             arch: x64
             npm_config_arch: x64
-          - os: macos-13
-            platform: darwin
-            arch: x64
-            npm_config_arch: x64
-          - os: macos-13
-            platform: darwin
-            arch: arm64
-            npm_config_arch: arm64
     runs-on: ${{ matrix.os }}
     steps:
       # 1. Check-out repository
@@ -190,7 +182,7 @@ jobs:
           files: |
             vsix-artifacts/*.vsix
           token: ${{ secrets.CI_GITHUB_TOKEN }}
-          repository: continuedev/continue
+          repository: atomlong/continue
           prerelease: true
 
   publish:
